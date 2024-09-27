@@ -10,6 +10,7 @@
 #include "../../devices/IPointer.hpp"
 #include "../../devices/ITouch.hpp"
 #include "../../devices/Tablet.hpp"
+#include "../SessionLockManager.hpp"
 
 class CPointerConstraint;
 class CWindow;
@@ -52,6 +53,7 @@ enum eBorderIconDirection : uint8_t {
 };
 
 struct STouchData {
+    SSessionLockSurface* touchFocusLockSurface;
     PHLWINDOWREF           touchFocusWindow;
     PHLLSREF               touchFocusLS;
     WP<CWLSurfaceResource> touchFocusSurface;
