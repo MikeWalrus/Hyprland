@@ -163,10 +163,16 @@ SWorkspaceIDName getWorkspaceIDNameFromString(const std::string& in) {
         WORKSPACEID id = next ? g_pCompositor->m_lastMonitor->activeWorkspaceID() : 0;
         while (++id < LONG_MAX) {
             const auto PWORKSPACE = g_pCompositor->getWorkspaceByID(id);
-            if (!invalidWSes.contains(id) && (!PWORKSPACE || PWORKSPACE->getWindows() == 0)) {
-                result.id = id;
-                return result;
+            if (invalidWSes.contains(id))
+                continue;
+            if (PWORKSPACE) {
+                if (PWORKSPACE->getWindows())
+                    continue;
+                if (same_mon && PWORKSPACE->m_monitor && PWORKSPACE->m_monitor->m_id != g_pCompositor->m_lastMonitor->m_id)
+                    continue;
             }
+            result.id = id;
+            return result;
         }
     } else if (in.starts_with("prev")) {
         if (!g_pCompositor->m_lastMonitor)
